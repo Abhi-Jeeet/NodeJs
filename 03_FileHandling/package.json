@@ -1,0 +1,12 @@
+{
+  "name": "filehandling",
+  "version": "1.0.0",
+  "main": "fileHandle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node fileHandle.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
