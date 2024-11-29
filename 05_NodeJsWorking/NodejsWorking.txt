@@ -1,0 +1,11 @@
+When we get the request from the user, it goes to the Event Queue, where the request are queued, then the request from the event Queue goes to the event loop.
+
+Event Loop - The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that a single JavaScript thread is used by default — by offloading operations to the system kernel whenever possible.
+
+Blocking operations - Synchronous Task
+Non - Blocking Operations - Asynchronous Task
+
+Non-blocking operations are process by the event loop and after processing the response is send to the users back.
+
+if the operations is blocking - 
+then the operations enter into the thread pool and the work is done by the threadpool,and it return the result and the response is send back to the user.
