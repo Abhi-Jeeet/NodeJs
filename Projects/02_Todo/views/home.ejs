@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+    <script>
+        function toggleUpdateForm(id) {
+            const form = document.getElementById('update-form-' + id);
+            form.classList.toggle('hidden');
+        }
+
+        function toggleCompletion(id) {
+            const task = document.getElementById('task-' + id);
+            const checkbox = document.getElementById('checkbox-' + id);
+            if (checkbox.checked) {
+                task.classList.add('completed');
+            } else {
+                task.classList.remove('completed');
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans antialiased">
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-4xl font-bold text-center text-indigo-600 mb-6">To-Do List</h1>
+
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+            <form action="/todo" method="post" class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                <input type="text" name="title" placeholder="Enter your task" class="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Add Task</button>
+            </form>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <ul class="space-y-4">
+                <% titles.forEach((title, index) => { %>
+                    <li id="task-<%= title.id %>" class="flex flex-col sm:flex-row justify-between items-center py-4 border-b border-gray-200 <%= title.completed ? 'completed' : '' %>">
+                        <div class="flex items-center space-x-3">
+                             <input type="checkbox" id="checkbox-<%= title.id %>" <%= title.completed ? 'checked' : '' %> class="h-5 w-5 text-indigo-600" onchange="toggleCompletion('<%= title.id %>')">
+                            <span class="text-lg text-gray-800"><%= index + 1 %>. <%= title.title %></span>
+                        </div>
+
+                        <div class="flex items-center space-x-3 mt-4 sm:mt-0">
+                            <!-- Delete Button -->
+                            <form action="/todo/delete/<%= title.id %>" method="GET" style="display:inline;">
+                                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">Delete</button>
+                            </form>
+
+                            <!-- Edit Button -->
+                            <button type="button" onclick="toggleUpdateForm('<%= title.id %>')" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">Edit</button>
+                        </div>
+
+                        <!-- Update Form -->
+                        <form id="update-form-<%= title.id %>" action="/todo/update/<%= title.id %>" method="POST" class="hidden mt-2">
+                            <input type="text" name="title" value="<%= title.title %>" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-2/3" required>
+                            <div class="text-center sm:text-left mt-2">
+                                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Update</button>
+                            </div>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
